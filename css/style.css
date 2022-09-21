@@ -1,0 +1,33 @@
+.body {
+    background-color: rgb(74, 193, 76);
+    margin: auto;
+}
+.btn {
+    text-align: center;
+    height: 30px;
+    width: 100px;
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: pink;
+    cursor: pointer;
+}
+
+.upper-bar {
+    background-color: darkgrey;
+
+
+}
+
+.board {
+    height: 500px;
+    width: 50px;
+    cursor: pointer;
+    background-color: rgb(80, 72, 74);
+}
+
+.cell {
+height: 20px;
+width: 20px;
+}
+
