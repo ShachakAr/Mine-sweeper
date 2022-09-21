@@ -1,5 +1,6 @@
 // 'use strict'
 
+
 const FLAG = '🚩'
 const MINE = '💩'
 const EMPTY = ''
@@ -17,15 +18,16 @@ var gGame = {
     markedCount: 0, // how many flags the player placed
     secsPassed: 0
 }
+const mineLocations = []
 
 function onInitGame() {
-
+    
     gGame.isOn = true
     gLevel.SIZE = 4
     gLevel.MINES = 2
     gBoard = buildBoard(gLevel.SIZE); //board size by btn clicked
     console.table(gBoard)
-
+    
 
     renderBoard(gBoard)
 
@@ -44,10 +46,11 @@ function buildBoard(size) {
             })
         } board.push(row)
     }
+    console.log('board :>> ', board);
 
     // createmines
     setRndMines(board)
-
+    console.log('mineLocations :>> ', mineLocations);
     // board[1][1].isMine = true
     // board[1][1].isShown = true
     // board[3][3].isMine = true
@@ -58,7 +61,6 @@ function buildBoard(size) {
 }
 
 function setRndMines(board) {
-    const mineLocations = []
     for (var k = 0; k < gLevel.MINES; k++) {
         const i = getRndInt(0, gLevel.SIZE - 1)
         const j = getRndInt(0, gLevel.SIZE - 1)
@@ -66,23 +68,23 @@ function setRndMines(board) {
         const mineRndLocation = { i: i, j: j }
         mineLocations.push(mineRndLocation)
     }
-    return mineLocations
+    
 }
 // raise the minesAroundCount for every cell around a mine.
-function setMinesNegsCount([]) {
+function setMinesNegsCount(board) {
 
-    for (var k = 0; k < gLevel.MINES; k++) {
-        const mineLocation = mines[i]
+    for (var k = 0; k < mineLocations.length; k++) {
+        const mineLocation = mineLocations[k]
         for (var i = mineLocation.i - 1; i <= mineLocation.i + 1; i++) {
-            if (i < 0 || i >= board.length) continue
+            if (i < 0 || i >= gLevel.SIZE) continue
             for (var j = mineLocation.j - 1; j <= mineLocation.j + 1; j++) {
-                if (j < 0 || j >= board.length) continue
+                if (j < 0 || j >= gLevel.SIZE) continue
                 if (i === mineLocation.i && j === mineLocation.j) continue
-                if (board[i][j].isMine) continue
-                const minesCount = board[i][j]
-                minesCount.minesAroundCount++
+                // if (currCell.isMine === true) continue
+                board[i][j].minesAroundCount += 1
+               
             }
-        }
+        } return board
     }
 }
 
