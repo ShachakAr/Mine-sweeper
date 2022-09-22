@@ -22,3 +22,16 @@ function getClassName(location) {
     var cellClass = 'cell-' + location.i + '-' + location.j
     return cellClass
 }
+function startTimer() {
+    gStartTime = Date.now()
+    gTimeInterval = setInterval(updateTimer, 100)
+}
+
+function updateTimer() {
+    var diff = Date.now() - gStartTime
+    var inSeconds = (diff / 1000).toFixed(3)
+    gGame.secsPassed = inSeconds
+    document.querySelector('.h2 .game-timer .span').innerText = inSeconds
+}
+
+

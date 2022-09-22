@@ -1,33 +1,74 @@
 .body {
     background-color: rgb(74, 193, 76);
     margin: auto;
+    text-align: center;
 }
-.btn {
+
+.h2{ 
+    display: inline-block;
+    border: 5px;
+    border-style:solid; 
+    border-color:  black;
+    margin:auto;
+    padding: 10px;
+    display: inline-block;
+    background-color: darkgrey; 
+    text-align: center;
+}
+/* .h2 .game-time{
+    border-top: 10px;
+    border-left: 10px;
+}
+.h2 .reveled-places{
+    border-bottom: 10px;
+    border-left: 10px;
+} */
+.reset-btn{
+    display: inline-block;
     text-align: center;
     height: 30px;
     width: 100px;
-    margin: auto;
     margin-top: 20px;
     margin-bottom: 20px;
-    background-color: pink;
+    background-color: rgb(83, 83, 174);
     cursor: pointer;
+    border-radius: 25%;  
+}
+.container{
+    margin: auto;
+    text-align: center;
+}
+.btn{
+    display: inline;
+    text-align: center;
+    height: 30px;
+    width: 100px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: rgb(83, 83, 174);
+    cursor: pointer;
+    border-radius: 25%;
 }
 
-.upper-bar {
-    background-color: darkgrey;
-
-
+.center{
+    margin: auto;
+    border-style: solid;
+    border-color: black;
 }
 
 .board {
-    height: 500px;
-    width: 50px;
     cursor: pointer;
     background-color: rgb(80, 72, 74);
 }
 
 .cell {
-height: 20px;
-width: 20px;
+height: 25px;
+width: 25px;
+text-align: center;
+background-color: rgb(80, 72, 74);
+border: 1px;
+border-color: black;
+border-style: solid;
+
 }
 

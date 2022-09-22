@@ -9,20 +9,21 @@
     <title>Mine sweeper</title>
 </head>
 
-<body onload="onInitGame()">
+<body oncontextmenu="return false" class="body" onload="onInitGame(4)">
 
-    <div class="upper-bar">
-        Game Time: <span></span>
-        <div class="reset-btn" onclick="resetGame()">reset</div>
-        <div class="mines-counter">Mines to sweep: <span></span></div>
-    </div>
+    <h2>
+        <div class="game-timer">Game Time: <span></span></div> 
+        <div class="reveled">reveled places: <span></span></div>
+        <div class="mines-left">Mines left to sweep: <span></span></div>
+        <div class="reset-btn" onclick="onResetGame()">😀</div>
+    </h2>
 
     <div class="container">
-        <button class="btn" onclick="onInitGame(4)">Beginner</button>
-        <button class="btn" onclick="onInitGame(8)">Medium</button>
-        <button class="btn" onclick="onInitGame(12)">Expert</button>
+        <button class="btn" onclick="onInitGame(4)">Beginner👶</button>
+        <button class="btn" onclick="onInitGame(8)">Medium🤓</button>
+        <button class="btn" onclick="onInitGame(12)">Expert👩‍🎓</button>
     </div>
-    <table border="1" cellpadding="80">
+    <table class="center">
         <tbody class="board"></tbody>
     </table>
 
