@@ -8,33 +8,42 @@ const LOST = '💥'
 const NORMAL = "😀"
 const DEAD = "🤯"
 const WIN = "😎"
+
 // modael
 var gBoard = []
 var gStartTime
 var gTimeInterval
-var isFristClick = true
+var isFristClick
 var gLevel = {
     SIZE: 0,
     MINES: 0
 }
 var gGame = {
     isOn: false,
-    shownCount: 0, // how many numbers the player reveled
+    shownCount: 0, // how many cells are shown
     markedCount: 0, // how many flags the player placed
     secsPassed: 0,
-    markedCorrectlycount: 0
+    markedCorrectlyCount: 0,
+    isFristClick
 }
 const mineLocations = []
 
 function onInitGame(num) {
-    isFristClick = true
+    gGame.isFristClick = true
     gGame.isOn = true
+    document.querySelector('.game-timer span').innerText = ''
+    gGame.shownCount = 0
+
     gLevel.SIZE = num
     if (num === 4) gLevel.MINES = 2
     if (num === 8) gLevel.MINES = 12
     if (num === 12) gLevel.MINES = 32
-    gBoard = buildBoard(gLevel.SIZE);
+
+    document.querySelector('.reset-btn').innerText = NORMAL
+
+    gBoard = buildBoard(gLevel.SIZE)
     renderBoard(gBoard)
+
 }
 
 function buildBoard(size) {
@@ -50,16 +59,16 @@ function buildBoard(size) {
             })
         } board.push(row)
     }
-    console.table('board :>> ', board);
 
     setRndMines(board)
-    setMinesNegsCount(board) //create a negs loop and updates the "minesAroundCount"
+    setMinesNegsCount(board)
+    console.table('board :>> ', board);
 
     return board
 }
 
 function setRndMines(board) {
-    for (var k = 0; k < gLevel.MINES; k++) {
+    for (var l = 0; l < gLevel.MINES; l++) {
         const i = getRndInt(0, gLevel.SIZE - 1)
         const j = getRndInt(0, gLevel.SIZE - 1)
         if (!board[i][j].isMine) {
@@ -68,7 +77,7 @@ function setRndMines(board) {
             const mineRndLocation = { i: i, j: j }
             mineLocations.push(mineRndLocation)
         } else {
-            k--
+            l--
         }
     }
 }
@@ -85,6 +94,7 @@ function setMinesNegsCount(board) {
                 if (m < 0 || m >= gLevel.SIZE) continue
                 if (l === mineLocation.i && m === mineLocation.j) continue
                 if (board[l][m].isMine) continue
+
                 board[l][m].minesAroundCount++
 
             }
@@ -103,13 +113,13 @@ function renderBoard(board) {
             var cellClassName = getClassName(i, j) // cell-0-0
 
 
-            strHTML += `<td class="cell ' + ' ${cellClassName} ' + ' hide '"
+            strHTML += `<td class="cell ' + ' ${cellClassName} '"
             onclick="onClick(this,${i},${j} )"
             oncontextmenu="cellMarked(this, ${i}, ${j})">`
 
             if (!currCell.isShown) strHTML += `</td>`
 
-            else strHTML += `${getCellContent(currCell)}`
+            else strHTML += `${getCellContent(currCell)}</td>`
 
         }
         strHTML += '</tr>'
@@ -120,11 +130,16 @@ function renderBoard(board) {
 
     var diff = gLevel.MINES - gGame.markedCount
     document.querySelector('.mines-left span').innerHTML = diff
+
+    var elCount = document.querySelector('.shown-count span')
+    var shownCount = gGame.shownCount
+    elCount.innerHTML = shownCount
+
     // var minesLeft = (gGame.SIZE)**2 - (gGame.markedCount)
     // document.querySelector('.reveled-places span').innerHTML = minesLeft
 
-    
-    
+
+
 }
 
 function getCellContent(currCell) {
@@ -133,97 +148,107 @@ function getCellContent(currCell) {
     else return `${currCell.minesAroundCount}`
 }
 
+// TODO: start timer function
+// showncount is not correct -> negsCount
 function onClick(elCell, i, j) {
     var currCell = gBoard[i][j]
-    // if(isFristClick) startTimer()
+
     if (!gGame.isOn) return
     if (currCell.isShown) return
 
-    currCell.isShown = true
-    // if (isFristClick && currCell.isMine) return
-    // if (isFristClick){
-    //     // startTimer()
-    //     isFristClick = false
-    // }    
-    
-    if (currCell.isMine && isFristClick) return
-    else if (currCell.isMine) return  Gameover()
-    else if (currCell.minesAroundCount > 0) {
-        gGame.shownCount++
-        isFristClick = false
-        
-    } else if (currCell.minesAroundCount === 0){ 
-        showNegs(i, j)
+    if (gGame.isFristClick) {
+        startTimer()
+        gGame.isFristClick = false
     }
-    
-    renderBoard (gBoard)
 
-        
+    currCell.isShown = true
+    gGame.shownCount++
+    if (currCell.isMine) return Gameover()
+    else if (currCell.minesAroundCount === 0) showNegs(i, j)
+
+    renderBoard(gBoard)
+
 }
 
 function cellMarked(elCell, i, j) {
     var currCell = gBoard[i][j]
     if (!gGame.isOn) return
 
+
     if (currCell.isMarked) {
         currCell.isMarked = false
         currCell.isShown = false
+        gGame.markedCount--
+        // gGame.markedCorrectlyCount--
+        gGame.shownCount--
         renderBoard(gBoard)
     } else if (currCell.isShown) return
     else {
         currCell.isShown = true
         currCell.isMarked = true
         gGame.markedCount++
-        checkVictory(i, j)
+        gGame.shownCount++
         renderBoard(gBoard)
+        checkVictory(i, j)
     }
+
 }
 
 function checkVictory(i, j) {
 
     if (!gBoard[i][j].isMine) return
 
-    gGame.markedCorrectlycount++
-    var emptycells = gGame.SIZE**2 - gGame.markedCount
-    if (gGame.markedCorrectlycount === gLevel.MINES){
+    gGame.markedCorrectlyCount++
+
+    if (gGame.markedCorrectlyCount === gLevel.MINES) {
         console.log('victory!')
         clearInterval(gTimeInterval)
         gGame.isOn = false
         document.querySelector('.reset-btn').innerText = WIN
-        // stop time, change picure
+        gGame.markedCount = 0
+        gGame.markedCorrectlyCount = 0
+
     }
 }
 
-function Gameover(i, j) {
-    gGame.isOn = false
-    clearInterval(gTimeInterval) 
+// TODO: stop timer 
+function Gameover() {
     console.log('game over')
+
+    gGame.isOn = false
+    clearInterval(gTimeInterval)
     document.querySelector('.reset-btn').innerText = DEAD
+    gGame.markedCount = 0
+
     renderBoard(gBoard)
-    // TODO: stop timer change picture
 }
-function onResetGame(){
+
+function onResetGame() {
     onInitGame(gLevel.SIZE)
     document.querySelector('.reset-btn').innerText = NORMAL
 }
 
+// TODO: correct the recurseion
 function showNegs(i, j) {
-    // const extraCheck = []
+
     for (var l = i - 1; l <= i + 1; l++) {
         if (l < 0 || l >= gLevel.SIZE) continue
 
         for (var m = j - 1; m <= j + 1; m++) {
+            var currCell = gBoard[l][m]
             if (m < 0 || m >= gLevel.SIZE) continue
-            if (l === i && m === j) continue
-            // if (gBoard[l][m].isMine) continue
-            gBoard[l][m].isShown = true
+            else if (l === i && m === j) continue
+            else if (currCell.isMine) continue
+            else if (currCell.isShown) continue
+
+            currCell.isShown = true
             gGame.shownCount++
-            isFristClick = false
-            // if (gBoard[l][m].minesAroundCount === 0) extraCheck.push({i: l, j: m})
+            if (currCell.minesAroundCount === 0) showNegs(l, m)
+
 
         }
     }
-    // if (!extraCheck) showNegs(extraCheck.i, extraCheck.j)
+
 }
 
 function getClassName(i, j) {
@@ -240,5 +265,5 @@ function getClassName(i, j) {
 // function renderTheResetBtn(i, j){
 //         if (gGame.isOn) renderCell(i, j, NORMAL)
 //         else if (!gGame.isOn) renderCell(i, j, DEAD)
-//         else if (checkVictory) renderCell(i, j, WIN)      
+//         else if (checkVictory) renderCell(i, j, WIN)
 // }    

@@ -1,18 +1,17 @@
 .body {
-    background-color: rgb(74, 193, 76);
+    background-color: rgb(138, 202, 234);
     margin: auto;
     text-align: center;
 }
 
 .h2{ 
-    display: inline-block;
+    font-style: italic;
+    display: block;
     border: 5px;
     border-style:solid; 
     border-color:  black;
     margin:auto;
-    padding: 10px;
-    display: inline-block;
-    background-color: darkgrey; 
+    padding: 20px;
     text-align: center;
 }
 /* .h2 .game-time{
@@ -64,6 +63,7 @@
 .cell {
 height: 25px;
 width: 25px;
+color: white;
 text-align: center;
 background-color: rgb(80, 72, 74);
 border: 1px;
