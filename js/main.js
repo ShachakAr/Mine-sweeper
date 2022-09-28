@@ -8,7 +8,6 @@ const LOST = '💥'
 const NORMAL = "😀"
 const DEAD = "🤯"
 const WIN = "😎"
-
 // modael
 var gBoard = []
 var gStartTime
@@ -23,7 +22,7 @@ var gGame = {
     shownCount: 0, // how many cells are shown
     markedCount: 0, // how many flags the player placed
     secsPassed: 0,
-    markedCorrectlyCount: 0,
+    markedCorrectlycount: 0,
     isFristClick
 }
 const mineLocations = []
@@ -34,6 +33,9 @@ function onInitGame(num) {
     document.querySelector('.game-timer span').innerText = ''
     gGame.shownCount = 0
 
+
+   
+
     gLevel.SIZE = num
     if (num === 4) gLevel.MINES = 2
     if (num === 8) gLevel.MINES = 12
@@ -41,7 +43,7 @@ function onInitGame(num) {
 
     document.querySelector('.reset-btn').innerText = NORMAL
 
-    gBoard = buildBoard(gLevel.SIZE)
+    gBoard = buildBoard(gLevel.SIZE);
     renderBoard(gBoard)
 
 }
@@ -134,7 +136,7 @@ function renderBoard(board) {
     var elCount = document.querySelector('.shown-count span')
     var shownCount = gGame.shownCount
     elCount.innerHTML = shownCount
-
+    
     // var minesLeft = (gGame.SIZE)**2 - (gGame.markedCount)
     // document.querySelector('.reveled-places span').innerHTML = minesLeft
 
@@ -167,7 +169,7 @@ function onClick(elCell, i, j) {
     else if (currCell.minesAroundCount === 0) showNegs(i, j)
 
     renderBoard(gBoard)
-
+    
 }
 
 function cellMarked(elCell, i, j) {
@@ -179,7 +181,7 @@ function cellMarked(elCell, i, j) {
         currCell.isMarked = false
         currCell.isShown = false
         gGame.markedCount--
-        // gGame.markedCorrectlyCount--
+        // gGame.markedCorrectlycount--
         gGame.shownCount--
         renderBoard(gBoard)
     } else if (currCell.isShown) return
@@ -191,22 +193,21 @@ function cellMarked(elCell, i, j) {
         renderBoard(gBoard)
         checkVictory(i, j)
     }
-
+    
 }
 
 function checkVictory(i, j) {
 
     if (!gBoard[i][j].isMine) return
 
-    gGame.markedCorrectlyCount++
+    gGame.markedCorrectlycount++
 
-    if (gGame.markedCorrectlyCount === gLevel.MINES) {
+    if (gGame.markedCorrectlycount === gLevel.MINES) {
         console.log('victory!')
         clearInterval(gTimeInterval)
         gGame.isOn = false
         document.querySelector('.reset-btn').innerText = WIN
         gGame.markedCount = 0
-        gGame.markedCorrectlyCount = 0
 
     }
 }
@@ -219,7 +220,7 @@ function Gameover() {
     clearInterval(gTimeInterval)
     document.querySelector('.reset-btn').innerText = DEAD
     gGame.markedCount = 0
-
+    
     renderBoard(gBoard)
 }
 
@@ -243,12 +244,12 @@ function showNegs(i, j) {
 
             currCell.isShown = true
             gGame.shownCount++
-            if (currCell.minesAroundCount === 0) showNegs(l, m)
+            if (currCell.minesAroundCount === 0) showNegs(l , m)
 
 
         }
     }
-
+    
 }
 
 function getClassName(i, j) {
