@@ -1,27 +1,12 @@
-.body {
+/* General settings */
+body {
     background-color: rgb(138, 202, 234);
     margin: auto;
     text-align: center;
 }
 
-.h2{ 
-    font-style: italic;
-    display: block;
-    border: 5px;
-    border-style:solid; 
-    border-color:  black;
-    margin:auto;
-    padding: 20px;
-    text-align: center;
-}
-/* .h2 .game-time{
-    border-top: 10px;
-    border-left: 10px;
-}
-.h2 .reveled-places{
-    border-bottom: 10px;
-    border-left: 10px;
-} */
+/* Game Statistics */
+
 .reset-btn{
     display: inline-block;
     text-align: center;
@@ -33,10 +18,12 @@
     cursor: pointer;
     border-radius: 25%;  
 }
+
 .container{
     margin: auto;
     text-align: center;
 }
+
 .btn{
     display: inline;
     text-align: center;
@@ -69,6 +56,8 @@ background-color: rgb(80, 72, 74);
 border: 1px;
 border-color: black;
 border-style: solid;
-
 }
 
+footer{
+    margin-bottom: 20px;
+}
